@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>旋轉圓盤反應器互動教學</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="intro-panel" aria-labelledby="page-title">
+        <div class="title-row">
+          <div>
+            <p class="eyebrow">化工裝置第18章</p>
+            <h1 id="page-title">旋轉圓盤反應器</h1>
+          </div>
+          <div class="status-card" aria-live="polite">
+            <span class="status-label">目前狀態</span>
+            <strong id="systemStatus">穩定處理中</strong>
+          </div>
+        </div>
+
+        <div class="concept-grid">
+          <article>
+            <span class="step-number">1</span>
+            <p>
+              數個附上微生物膜的等間隔圓盤，部分浸入
+              <strong class="danger-text">污水槽</strong> 中。
+            </p>
+          </article>
+          <article>
+            <span class="step-number">2</span>
+            <p>
+              圓盤緩緩旋轉時，微生物交替接觸污水與空氣，分解水中有機物；
+              老化生物膜會剝落並在沉降池中分離。
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="workspace" aria-label="互動模擬區">
+        <div class="simulator">
+          <div class="diagram-wrap">
+            <svg id="reactorSvg" viewBox="0 0 980 560" role="img" aria-labelledby="diagramTitle diagramDesc">
+              <title id="diagramTitle">旋轉圓盤反應器示意圖</title>
+              <desc id="diagramDesc">圓盤部分浸入污水槽，右側顯示多片圓盤與旋轉軸。</desc>
+
+              <defs>
+                <linearGradient id="waterGradient" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" stop-color="#9cc8d4" stop-opacity="0.78" />
+                  <stop offset="100%" stop-color="#4b8797" stop-opacity="0.68" />
+                </linearGradient>
+                <linearGradient id="discGradient" x1="0" x2="1" y1="0" y2="0">
+                  <stop offset="0%" stop-color="#f7f7f7" />
+                  <stop offset="50%" stop-color="#c7cbd0" />
+                  <stop offset="100%" stop-color="#fdfdfd" />
+                </linearGradient>
+                <pattern id="hatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(135)">
+                  <line x1="0" y1="0" x2="0" y2="10" stroke="#242424" stroke-width="2" />
+                </pattern>
+                <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#25343a" flood-opacity="0.15" />
+                </filter>
+              </defs>
+
+              <g class="tank" filter="url(#softShadow)">
+                <path d="M92 288 L92 412 L154 486 L472 486 L534 412 L534 288 L510 288 L510 390 L462 448 L164 448 L116 390 L116 288 Z" fill="#f7f7f7" stroke="#1f2428" stroke-width="4" />
+                <path d="M92 412 L154 486 L472 486 L534 412 L534 486 L92 486 Z" fill="url(#hatch)" opacity="0.18" />
+                <path id="waterShape" d="M116 318 C170 300 196 340 250 318 C304 296 338 340 390 318 C442 296 474 328 510 318 L510 448 L116 448 Z" fill="url(#waterGradient)" />
+                <path id="waterSurface" d="M116 318 C170 300 196 340 250 318 C304 296 338 340 390 318 C442 296 474 328 510 318" fill="none" stroke="#6b8790" stroke-width="4" stroke-linecap="round" />
+              </g>
+
+              <g id="organicsLayer" aria-hidden="true"></g>
+
+              <g id="discGroup" transform="translate(313 302)">
+                <circle r="132" fill="url(#discGradient)" stroke="#202428" stroke-width="4" />
+                <line x1="-132" y1="0" x2="132" y2="0" class="disc-mark" />
+                <line x1="0" y1="-132" x2="0" y2="132" class="disc-mark" />
+                <line x1="-94" y1="-94" x2="94" y2="94" class="biofilm-line" />
+                <line x1="-94" y1="94" x2="94" y2="-94" class="biofilm-line" />
+              </g>
+              <line x1="313" y1="170" x2="313" y2="434" class="center-axis" />
+              <path id="rotationArrow" d="M184 226 C212 170 256 140 318 136" fill="none" stroke="#8f98a0" stroke-width="5" stroke-linecap="round" />
+              <path d="M318 136 L290 127 L300 154 Z" fill="#8f98a0" />
+
+              <g class="flow-group">
+                <line x1="554" y1="393" x2="602" y2="393" stroke="#1f2428" stroke-width="5" />
+                <path d="M602 393 L584 381 L584 405 Z" fill="#1f2428" />
+                <text x="548" y="432">排水</text>
+              </g>
+
+              <g class="side-view">
+                <path d="M650 332 C672 312 692 352 714 332 C736 312 760 348 784 332 C816 312 842 344 884 332 L884 486 L650 486 Z" fill="url(#waterGradient)" />
+                <path d="M650 332 C672 312 692 352 714 332 C736 312 760 348 784 332 C816 312 842 344 884 332" fill="none" stroke="#6b8790" stroke-width="4" stroke-linecap="round" />
+                <rect x="650" y="486" width="234" height="48" fill="url(#hatch)" opacity="0.2" stroke="#1f2428" stroke-width="3" />
+                <line x1="620" y1="286" x2="830" y2="286" stroke="#1f2428" stroke-width="6" />
+                <g id="stackDiscs">
+                  <rect x="680" y="142" width="16" height="286" fill="#eeeeee" stroke="#1f2428" stroke-width="4" />
+                  <rect x="704" y="142" width="16" height="286" fill="#eeeeee" stroke="#1f2428" stroke-width="4" />
+                  <rect x="728" y="142" width="16" height="286" fill="#eeeeee" stroke="#1f2428" stroke-width="4" />
+                  <rect x="752" y="142" width="16" height="286" fill="#eeeeee" stroke="#1f2428" stroke-width="4" />
+                  <rect x="776" y="142" width="16" height="286" fill="#eeeeee" stroke="#1f2428" stroke-width="4" />
+                  <rect x="800" y="142" width="16" height="286" fill="#eeeeee" stroke="#1f2428" stroke-width="4" />
+                </g>
+                <line x1="816" y1="142" x2="858" y2="100" stroke="#1f2428" stroke-width="3" />
+                <text x="864" y="104">旋轉圓盤</text>
+                <line x1="818" y1="286" x2="866" y2="246" stroke="#1f2428" stroke-width="3" />
+                <text x="872" y="248">旋轉軸</text>
+                <text x="890" y="350">水面</text>
+              </g>
+
+              <g id="microbesLayer" aria-hidden="true"></g>
+              <g id="productsLayer" aria-hidden="true"></g>
+              <g id="sludgeLayer" aria-hidden="true"></g>
+            </svg>
+          </div>
+
+          <aside class="control-panel" aria-label="操作控制">
+            <div class="readout">
+              <span>處理效率</span>
+              <strong id="efficiencyValue">74%</strong>
+            </div>
+            <label>
+              圓盤轉速
+              <span id="speedValue">3 rpm</span>
+              <input id="speedControl" type="range" min="1" max="8" value="3" />
+            </label>
+            <label>
+              有機物濃度
+              <span id="loadValue">中</span>
+              <input id="loadControl" type="range" min="1" max="5" value="3" />
+            </label>
+            <label>
+              浸沒比例
+              <span id="depthValue">40%</span>
+              <input id="depthControl" type="range" min="20" max="65" value="40" />
+            </label>
+            <div class="button-row">
+              <button id="toggleRun" type="button">暫停</button>
+              <button id="resetBtn" type="button">重設</button>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="learning-panel" aria-label="教學重點">
+        <article>
+          <h2>觀察重點</h2>
+          <p id="observationText">
+            轉速適中且浸沒約 40% 時，微生物膜能同時取得有機物與氧氣，處理效率較穩定。
+          </p>
+        </article>
+        <article>
+          <h2>操作提示</h2>
+          <ul>
+            <li>轉速太低：氧氣供應不足，分解速率下降。</li>
+            <li>轉速太高：生物膜容易被剪力剝落，沉降負荷增加。</li>
+            <li>有機物濃度升高時，需要更大的生物膜面積或較長停留時間。</li>
+          </ul>
+        </article>
+      </section>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
